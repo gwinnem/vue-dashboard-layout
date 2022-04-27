@@ -17,9 +17,10 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * Add Pinia for sharing and updating the state when the layout and the items are changed.
 
 ## TODO's
-* ~~ Update all npm packages. ~~
-* ~~ Change all js files to ts. ~~
+* ~~Update all npm packages.~~
+* ~~Change all js files to ts.~~
 * Fix new issues.
+    * Prop rowHeight is not a number when being increased in the App.vue file.
 * Investigate if interact js can be replaced since it has links to outdated packages with performance issues.
 * Refactor prop names.
 * Extract inline json code for layouts to new files.
@@ -33,11 +34,7 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * Refactor code in vue files and introduce Pinia store, for storing and sharing state.
 * Register domain vue-dashboard-layout and find hosting.
 * Create properly styled documentation on new website.
-* Create advanced examples on new website using Quasar and element-plus.
-
-
-## New issues:
-* Prop rowHeight is not a number when being increased in the App.vue file.
+* Create advanced examples on new website using [Quasar framework](https://quasar.dev/), [element-plus framework](https://element-plus.org/en-US/) and [Vue material template](https://www.creative-tim.com/vuematerial).
 
 
 ## Documentation
