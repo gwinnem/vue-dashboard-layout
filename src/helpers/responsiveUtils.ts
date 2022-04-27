@@ -1,8 +1,6 @@
-// @flow
-
 import {cloneLayout, compact, correctBounds} from './utils';
-
 import type {Layout} from './utils';
+
 export type ResponsiveLayout = {lg?: Layout, md?: Layout, sm?: Layout, xs?: Layout, xxs?: Layout};
 type Breakpoint = string;
 type Breakpoints = {lg?: number, md?: number, sm?: number, xs?: number, xxs?: number};

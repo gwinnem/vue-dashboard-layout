@@ -111,11 +111,9 @@
 <script>
     import GridItem from './components/GridItem.vue';
     import GridLayout from './components/GridLayout.vue';
-    // import ResponsiveGridLayout from './components/ResponsiveGridLayout.vue';
     import TestElement from './components/TestElement.vue';
     import CustomDragElement from './components/CustomDragElement.vue';
     import {getDocumentDir, setDocumentDir} from "./helpers/DOM";
-    //var eventBus = require('./eventBus');
 
     let testLayout = [
         {"x":0,"y":0,"w":2,"h":2,"i":"0", resizable: true, draggable: true, static: false, minY: 0, maxY: 2},
