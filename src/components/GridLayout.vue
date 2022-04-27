@@ -17,17 +17,28 @@
     }
 </style>
 <script>
-    import Vue from 'vue';
-    const elementResizeDetectorMaker = require("element-resize-detector");
+import Vue from 'vue';
+import {
+  bottom,
+  cloneLayout,
+  compact,
+  getAllCollisions,
+  getLayoutItem,
+  moveElement,
+  validateLayout
+} from '../helpers/utils';
+import {
+  findOrGenerateResponsiveLayout,
+  getBreakpointFromWidth,
+  getColsFromBreakpoint
+} from "../helpers/responsiveUtils";
+//var eventBus = require('./eventBus');
+import GridItem from './GridItem.vue'
+import {addWindowEventListener, removeWindowEventListener} from "../helpers/DOM";
 
-    import {bottom, compact, getLayoutItem, moveElement, validateLayout, cloneLayout, getAllCollisions} from '../helpers/utils';
-    import {getBreakpointFromWidth, getColsFromBreakpoint, findOrGenerateResponsiveLayout} from "../helpers/responsiveUtils";
-    //var eventBus = require('./eventBus');
+const elementResizeDetectorMaker = require("element-resize-detector");
 
-    import GridItem from './GridItem.vue'
-    import {addWindowEventListener, removeWindowEventListener} from "../helpers/DOM";
-
-    export default {
+export default {
         name: "GridLayout",
         provide() {
             return {
@@ -304,8 +315,7 @@
                 if (!this.autoSize) return;
                 // console.log("bottom: " + bottom(this.layout))
                 // console.log("rowHeight + margins: " + (this.rowHeight + this.margin[1]) + this.margin[1])
-                const containerHeight =  bottom(this.layout) * (this.rowHeight + this.margin[1]) + this.margin[1] + 'px';
-                return containerHeight;
+              return bottom(this.layout) * (this.rowHeight + this.margin[1]) + this.margin[1] + 'px';
             },
             dragEvent: function (eventName, id, x, y, h, w) {
                 //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
