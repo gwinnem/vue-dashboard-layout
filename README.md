@@ -65,8 +65,6 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 
 
 ## Issues
-[Template](./.github/ISSUE_TEMPLATE.md)
 
 
 ## Pull requests
-[Template](./.github/ISSUE_TEMPLATE.md)
