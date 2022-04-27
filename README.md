@@ -13,7 +13,7 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * Automatic RTL support.
 * Responsive.
 
-## New Feature:
+## New Features:
 * Add Pinia for sharing and updating the state when the layout and the items are changed.
 
 ## TODO's
@@ -33,7 +33,7 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * Refactor code in vue files and introduce Pinia store, for storing and sharing state.
 * Register domain vue-dashboard-layout and find hosting.
 * Create properly styled documentation on new website.
-* Create advanced examples on new website.
+* Create advanced examples on new website using Quasar and element-plus.
 
 
 ## New issues:
