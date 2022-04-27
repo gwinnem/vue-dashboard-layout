@@ -1,5 +1,3 @@
-# gwinnem/vue-dashboard-layout
-
 ## What is gwinnem/vue-dashboard-layout?
 [It is based on jbaysolutions: vue-grid-layout](https://jbaysolutions.github.io/vue-grid-layout)
 
@@ -13,6 +11,29 @@
 * Automatic RTL support.
 * Responsive.
 
+
+## TODO's
+* ~~ Update all npm packages. ~~
+* ~~ Change all js files to ts. ~~
+* Fix new issues.
+* Investigate if interact js can be replaced since it has links to outdated packages with performance issues.
+* Refactor prop names.
+* Extract inline json code for layouts to new files.
+* Convert code to typescript.
+* Fix all warnings.
+* New linting rules.
+* Create new example files.
+* New documentation.
+* New build scripts.
+* New npm publish scripts.
+* Register domain vue-dashboard-layout and find hosting.
+* Create properly styled documentation on new website.
+* Create advanced examples on new website.
+
+## New issues:
+* Prop rowHeight is not a number when being increased in the App.vue file.
+* Responsiveness when changing col nums in ui is not correct.
+
 ## License
 [MIT](./LICENSE.md)
 
@@ -20,22 +41,6 @@
 [Original documentation from jbaysolution](https://jbaysolutions.github.io/vue-grid-layout/guide/)
 
 [New documentation](./docs/TOC.md)
-
-## TODO's
-* Update all npm packages.
-* Extract inline json code for layouts to new files.
-* Convert code to typescript.
-* Fix all warnings.
-* New linting rules.
-* Refactor prop names.
-* Create new example files.
-* New documentation.
-* New build scripts.
-* New npm publish scripts.
-* Register domain vue-dashboard-layout and find hosting.
-* Create properly styled documentation on new website.
-
-
 
 # Contribute
 
