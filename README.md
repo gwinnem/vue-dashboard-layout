@@ -24,6 +24,7 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * ~~Investigate if interact js can be replaced since it has links to outdated packages with performance issues.~~
     * ~~Not working [Maybe use latest npm](https://www.npmjs.com/package/interactjs)~~
 * Refactor prop names.
+* Replace interactjs with [sortablejs](https://github.com/SortableJS/Sortable)
 * Extract inline json code for layouts to new files.
 * New linting rules.
 * Fix all warnings.
