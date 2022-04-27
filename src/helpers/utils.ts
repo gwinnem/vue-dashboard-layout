@@ -15,7 +15,7 @@ export type DragCallbackData = {
 };
 */
 // export type DragEvent = {e: Event} & DragCallbackData;
-export type Size = {width: number, height: number};
+// export type Size = {width: number, height: number};
 // export type ResizeEvent = {e: Event, node: HTMLElement, size: Size};
 
 // const isProduction = process.env.NODE_ENV === 'production';
@@ -55,7 +55,7 @@ export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
 }
 
 /**
- * Given two layoutitems, check if they collide.
+ * Given two layout items, check if they collide.
  *
  * @return {Boolean}   True if colliding.
  */
@@ -172,7 +172,7 @@ export function getLayoutItem(layout: Layout, id: string): LayoutItem | undefine
  * Returns the first item this layout collides with.
  * It doesn't appear to matter which order we approach this from, although
  * perhaps that is the wrong thing to do.
- *
+ * @param  {Object} layout     The actual layout.
  * @param  {Object} layoutItem Layout item.
  * @return {Object|undefined}  A colliding layout item, or undefined.
  */
@@ -204,7 +204,8 @@ export function getStatics(layout: Layout): Array<LayoutItem> {
  * @param  {Number}     [x]    X position in grid units.
  * @param  {Number}     [y]    Y position in grid units.
  * @param  {Boolean}    [isUserAction] If true, designates that the item we're moving is
- *                                     being dragged/resized by th euser.
+ *                                     being dragged/resized by the user.
+ * @param  {Boolean}    [preventCollision] If true the layout will not allow dragging and dropping an item on top of another item.
  */
 export function moveElement(layout: Layout, l: LayoutItem, x: number, y: number, isUserAction: boolean, preventCollision: boolean): Layout {
   if (l.static) return layout;
@@ -241,7 +242,7 @@ export function moveElement(layout: Layout, l: LayoutItem, x: number, y: number,
     const collision = collisions[i];
     // console.log('resolving collision between', l.i, 'at', l.y, 'and', collision.i, 'at', collision.y);
 
-    // Short circuit so we can't infinite loop
+    // Short circuit so we can avoid an infinite loop
     if (collision.moved) continue;
 
     // This makes it feel a bit more precise by waiting to swap for just a bit when moving up.
@@ -276,7 +277,7 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
   // We only do this on the main collision as this can get funky in cascades and cause
   // unwanted swapping behavior.
   if (isUserAction) {
-    // Make a mock item so we don't modify the item here, only modify in moveElement.
+    // Make a mock item, so we don't modify the item here, only modify in moveElement.
     const fakeItem: LayoutItem = {
       x: itemToMove.x,
       y: itemToMove.y,
@@ -291,7 +292,7 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
   }
 
   // Previously this was optimized to move below the collision directly, but this can cause problems
-  // with cascading moves, as an item may actually leapflog a collision and cause a reversal in order.
+  // with cascading moves, as an item may actually leap flog a collision and cause a reversal in order.
   return moveElement(layout, itemToMove, undefined, itemToMove.y + 1, isUserAction, preventCollision);
 }
 
@@ -301,10 +302,17 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
  * @param  {Number} num Any number
  * @return {String}     That number as a percentage.
  */
-export function perc(num: number): string {
-  return num * 100 + '%';
-}
+// export function percent(num: number): string {
+//   return num * 100 + '%';
+// }
 
+/**
+ * TODO
+ * @param top
+ * @param left
+ * @param width
+ * @param height
+ */
 export function setTransform(top, left, width, height): Object {
   // Replace unitless items with px
   const translate = "translate3d(" + left + "px," + top + "px, 0)";
@@ -459,7 +467,7 @@ export function synchronizeLayoutWithChildren(initialLayout: Layout, children: A
  * @param  {String} [contextName] Context name for errors.
  * @throw  {Error}                Validation error.
  */
-export function validateLayout(layout: Layout, contextName: string): void {
+export function validateLayout(layout: Layout, contextName?: string): void {
   contextName = contextName || "Layout";
   const subProps = ['x', 'y', 'w', 'h'];
   let keyArr = [];
@@ -492,9 +500,9 @@ export function validateLayout(layout: Layout, contextName: string): void {
 }
 
 // Flow can't really figure this out, so we just use Object
-export function autoBindHandlers(el: Object, fns: Array<string>): void {
-  fns.forEach((key) => el[key] = el[key].bind(el));
-}
+// export function autoBindHandlers(el: Object, fns: Array<string>): void {
+//   fns.forEach((key) => el[key] = el[key].bind(el));
+// }
 
 
 
@@ -503,55 +511,55 @@ export function autoBindHandlers(el: Object, fns: Array<string>): void {
  * @param obj
  * @returns {string}
  */
-export function createMarkup(obj) {
-    var keys = Object.keys(obj);
-    if (!keys.length) return '';
-    var i, len = keys.length;
-    var result = '';
-
-    for (i = 0; i < len; i++) {
-        var key = keys[i];
-        var val = obj[key];
-        result += hyphenate(key) + ':' + addPx(key, val) + ';';
-    }
-
-    return result;
-}
+// export function createMarkup(obj) {
+//     var keys = Object.keys(obj);
+//     if (!keys.length) return '';
+//     var i, len = keys.length;
+//     var result = '';
+//
+//     for (i = 0; i < len; i++) {
+//         var key = keys[i];
+//         var val = obj[key];
+//         result += hyphenate(key) + ':' + addPx(key, val) + ';';
+//     }
+//
+//     return result;
+// }
 
 
 /* The following list is defined in React's core */
-export var IS_UNITLESS = {
-    animationIterationCount: true,
-    boxFlex: true,
-    boxFlexGroup: true,
-    boxOrdinalGroup: true,
-    columnCount: true,
-    flex: true,
-    flexGrow: true,
-    flexPositive: true,
-    flexShrink: true,
-    flexNegative: true,
-    flexOrder: true,
-    gridRow: true,
-    gridColumn: true,
-    fontWeight: true,
-    lineClamp: true,
-    lineHeight: true,
-    opacity: true,
-    order: true,
-    orphans: true,
-    tabSize: true,
-    widows: true,
-    zIndex: true,
-    zoom: true,
-
-    // SVG-related properties
-    fillOpacity: true,
-    stopOpacity: true,
-    strokeDashoffset: true,
-    strokeOpacity: true,
-    strokeWidth: true
-};
+// export var IS_UNITLESS = {
+//     animationIterationCount: true,
+//     boxFlex: true,
+//     boxFlexGroup: true,
+//     boxOrdinalGroup: true,
+//     columnCount: true,
+//     flex: true,
+//     flexGrow: true,
+//     flexPositive: true,
+//     flexShrink: true,
+//     flexNegative: true,
+//     flexOrder: true,
+//     gridRow: true,
+//     gridColumn: true,
+//     fontWeight: true,
+//     lineClamp: true,
+//     lineHeight: true,
+//     opacity: true,
+//     order: true,
+//     orphans: true,
+//     tabSize: true,
+//     widows: true,
+//     zIndex: true,
+//     zoom: true,
+//
+//     // SVG-related properties
+//     fillOpacity: true,
+//     stopOpacity: true,
+//     strokeDashoffset: true,
+//     strokeOpacity: true,
+//     strokeWidth: true
+// };
 
 
 /**
@@ -560,13 +568,13 @@ export var IS_UNITLESS = {
  * @param value
  * @returns {*}
  */
-export function addPx(name, value) {
-    if(typeof value === 'number' && !IS_UNITLESS[ name ]) {
-        return value + 'px';
-    } else {
-        return value;
-    }
-}
+// export function addPx(name, value) {
+//     if(typeof value === 'number' && !IS_UNITLESS[ name ]) {
+//         return value + 'px';
+//     } else {
+//         return value;
+//     }
+// }
 
 
 /**
@@ -576,26 +584,26 @@ export function addPx(name, value) {
  * @return {String}
  */
 
-export var hyphenateRE = /([a-z\d])([A-Z])/g;
+// export var hyphenateRE = /([a-z\d])([A-Z])/g;
 
-export function hyphenate(str) {
-    return str.replace(hyphenateRE, '$1-$2').toLowerCase();
-}
+// export function hyphenate(str) {
+//     return str.replace(hyphenateRE, '$1-$2').toLowerCase();
+// }
 
 
-export function findItemInArray(array, property, value) {
-    for (var i=0; i < array.length; i++)
-        if (array[i][property] == value)
-            return true;
+// export function findItemInArray(array, property, value) {
+//     for (var i=0; i < array.length; i++)
+//         if (array[i][property] == value)
+//             return true;
+//
+//     return false;
+// }
 
-    return false;
-}
-
-export function findAndRemove(array, property, value) {
-    array.forEach(function (result, index) {
-        if (result[property] === value) {
-            //Remove from array
-            array.splice(index, 1);
-        }
-    });
-}
+// export function findAndRemove(array, property, value) {
+//     array.forEach(function (result, index) {
+//         if (result[property] === value) {
+//             //Remove from array
+//             array.splice(index, 1);
+//         }
+//     });
+// }
