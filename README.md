@@ -22,7 +22,7 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * Fix new issues.
     * Prop rowHeight is not a number when being increased in the App.vue file.
 * ~~Investigate if interact js can be replaced since it has links to outdated packages with performance issues.~~
-    * ~~[Maybe use latest npm](https://www.npmjs.com/package/interactjs)~~
+    * ~~Not working [Maybe use latest npm](https://www.npmjs.com/package/interactjs)~~
 * Refactor prop names.
 * Extract inline json code for layouts to new files.
 * New linting rules.
