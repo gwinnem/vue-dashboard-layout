@@ -61,7 +61,7 @@ export default {
     },
     rowHeight: {
       type: Number,
-      default: 150
+      default: 30
     },
     maxRows: {
       type: Number,
