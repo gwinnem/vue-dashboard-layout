@@ -175,9 +175,6 @@
             this.index = this.layout.length;
         },
         methods: {
-            clicked: function() {
-                window.alert("CLICK!");
-            },
             increaseWidth: function() {
                 let width = document.getElementById("content").offsetWidth;
                 width += 20;
@@ -240,8 +237,8 @@
                 } else {
                     toggle = "rtl"
                 }
+                // ignore warning here for the time being
                 setDocumentDir(toggle);
-                //eventBus.$emit('directionchange');
             },
 
             layoutCreatedEvent: function(newLayout){
@@ -266,35 +263,6 @@
         },
     }
 </script>
-
-<style>
-    /*    #app {
-            font-family: 'Avenir', Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-align: center;
-            color: #2c3e50;
-            margin-top: 60px;
-        }
-
-        h1, h2 {
-            font-weight: normal;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            display: inline-block;
-            margin: 0 10px;
-        }
-
-        a {
-            color: #42b983;
-        }*/
-</style>
 
 <style>
 #app {
