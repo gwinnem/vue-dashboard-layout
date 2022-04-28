@@ -86,20 +86,19 @@
     }
 </style>
 <script>
-    import {setTopLeft, setTopRight, setTransformRtl, setTransform} from '../helpers/utils';
-    import {getControlPosition, createCoreData} from '../helpers/draggableUtils';
-    import {getColsFromBreakpoint} from '../helpers/responsiveUtils';
-    import {getDocumentDir} from "../helpers/DOM";
-    //    var eventBus = require('./eventBus');
+import {setTopLeft, setTopRight, setTransform, setTransformRtl} from '../helpers/utils';
+import {createCoreData, getControlPosition} from '../helpers/draggableUtils';
+import {getColsFromBreakpoint} from '../helpers/responsiveUtils';
+import {getDocumentDir} from "../helpers/DOM";
+//    var eventBus = require('./eventBus');
+import '@interactjs/auto-start'
+import '@interactjs/actions/drag'
+import '@interactjs/actions/resize'
+import '@interactjs/modifiers'
+import '@interactjs/dev-tools'
+import interact from '@interactjs/interact'
 
-    import '@interactjs/auto-start'
-    import '@interactjs/actions/drag'
-    import '@interactjs/actions/resize'
-    import '@interactjs/modifiers'
-    import '@interactjs/dev-tools'
-    import interact from '@interactjs/interact'
-
-    export default {
+export default {
         name: "GridItem",
         props: {
             /*cols: {
@@ -243,7 +242,7 @@
         created () {
             let self = this;
 
-            // Accessible refernces of functions for removing in beforeDestroy
+            // Accessible references of functions for removing in beforeDestroy
             self.updateWidthHandler = function (width) {
                 self.updateWidth(width);
             };
@@ -272,7 +271,7 @@
                 self.maxRows = maxRows;
             };
 
-            self.directionchangeHandler = () => {
+            self.directionChangeHandler = () => {
                 this.rtl = getDocumentDir() === 'rtl';
                 this.compact();
             };
@@ -287,7 +286,7 @@
             this.eventBus.$on('setResizable', self.setResizableHandler);
             this.eventBus.$on('setRowHeight', self.setRowHeightHandler);
             this.eventBus.$on('setMaxRows', self.setMaxRowsHandler);
-            this.eventBus.$on('directionchange', self.directionchangeHandler);
+            this.eventBus.$on('directionchange', self.directionChangeHandler);
             this.eventBus.$on('setColNum', self.setColNum)
 
             this.rtl = getDocumentDir() === 'rtl';
@@ -301,10 +300,10 @@
             this.eventBus.$off('setResizable', self.setResizableHandler);
             this.eventBus.$off('setRowHeight', self.setRowHeightHandler);
             this.eventBus.$off('setMaxRows', self.setMaxRowsHandler);
-            this.eventBus.$off('directionchange', self.directionchangeHandler);
+            this.eventBus.$off('directionchange', self.directionChangeHandler);
             this.eventBus.$off('setColNum', self.setColNum);
             if (this.interactObj) {
-                this.interactObj.unset() // destroy interact intance
+                this.interactObj.unset() // destroy interact instance
             }
         },
         mounted: function () {
@@ -669,7 +668,7 @@
                     out = {
                         right: Math.round(colWidth * x + (x + 1) * this.margin[0]),
                         top: Math.round(this.rowHeight * y + (y + 1) * this.margin[1]),
-                        // 0 * Infinity === NaN, which causes problems with resize constriants;
+                        // 0 * Infinity === NaN, which causes problems with resize constraints;
                         // Fix this if it occurs.
                         // Note we do it here rather than later because Math.round(Infinity) causes deopt
                         width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
@@ -679,7 +678,7 @@
                     out = {
                         left: Math.round(colWidth * x + (x + 1) * this.margin[0]),
                         top: Math.round(this.rowHeight * y + (y + 1) * this.margin[1]),
-                        // 0 * Infinity === NaN, which causes problems with resize constriants;
+                        // 0 * Infinity === NaN, which causes problems with resize constraints;
                         // Fix this if it occurs.
                         // Note we do it here rather than later because Math.round(Infinity) causes deopt
                         width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
@@ -718,9 +717,8 @@
             },
             // Helper for generating column width
             calcColWidth() {
-                const colWidth = (this.containerWidth - (this.margin[0] * (this.cols + 1))) / this.cols;
-               // console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
-                return colWidth;
+              // console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
+                return (this.containerWidth - (this.margin[0] * (this.cols + 1))) / this.cols;
             },
 
             /**
@@ -843,44 +841,44 @@
                     });
                 }
             },
-            autoSize: function() {
-                // ok here we want to calculate if a resize is needed
-                this.previousW = this.innerW;
-                this.previousH = this.innerH;
-
-                let newSize=this.$slots.default[0].elm.getBoundingClientRect();
-                let pos = this.calcWH(newSize.height, newSize.width, true);
-                if (pos.w < this.minW) {
-                    pos.w = this.minW;
-                }
-                if (pos.w > this.maxW) {
-                    pos.w = this.maxW;
-                }
-                if (pos.h < this.minH) {
-                    pos.h = this.minH;
-                }
-                if (pos.h > this.maxH) {
-                    pos.h = this.maxH;
-                }
-
-                if (pos.h < 1) {
-                    pos.h = 1;
-                }
-                if (pos.w < 1) {
-                    pos.w = 1;
-                }
-
-                // this.lastW = x; // basically, this is copied from resizehandler, but shouldn't be needed
-                // this.lastH = y;
-
-                if (this.innerW !== pos.w || this.innerH !== pos.h) {
-                    this.$emit("resize", this.i, pos.h, pos.w, newSize.height, newSize.width);
-                }
-                if (this.previousW !== pos.w || this.previousH !== pos.h) {
-                    this.$emit("resized", this.i, pos.h, pos.w, newSize.height, newSize.width);
-                    this.eventBus.$emit("resizeEvent", "resizeend", this.i, this.innerX, this.innerY, pos.h, pos.w);
-                }
-            }
+            // autoSize: function() {
+            //     // ok here we want to calculate if a resize is needed
+            //     this.previousW = this.innerW;
+            //     this.previousH = this.innerH;
+            //
+            //     let newSize=this.$slots.default[0].elm.getBoundingClientRect();
+            //     let pos = this.calcWH(newSize.height, newSize.width, true);
+            //     if (pos.w < this.minW) {
+            //         pos.w = this.minW;
+            //     }
+            //     if (pos.w > this.maxW) {
+            //         pos.w = this.maxW;
+            //     }
+            //     if (pos.h < this.minH) {
+            //         pos.h = this.minH;
+            //     }
+            //     if (pos.h > this.maxH) {
+            //         pos.h = this.maxH;
+            //     }
+            //
+            //     if (pos.h < 1) {
+            //         pos.h = 1;
+            //     }
+            //     if (pos.w < 1) {
+            //         pos.w = 1;
+            //     }
+            //
+            //     // this.lastW = x; // basically, this is copied from resizeHandler, but shouldn't be needed
+            //     // this.lastH = y;
+            //
+            //     if (this.innerW !== pos.w || this.innerH !== pos.h) {
+            //         this.$emit("resize", this.i, pos.h, pos.w, newSize.height, newSize.width);
+            //     }
+            //     if (this.previousW !== pos.w || this.previousH !== pos.h) {
+            //         this.$emit("resized", this.i, pos.h, pos.w, newSize.height, newSize.width);
+            //         this.eventBus.$emit("resizeEvent", "resizeend", this.i, this.innerX, this.innerY, pos.h, pos.w);
+            //     }
+            // }
         },
     }
 </script>
