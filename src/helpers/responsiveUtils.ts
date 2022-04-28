@@ -45,10 +45,10 @@ export function getColsFromBreakpoint(breakpoint: Breakpoint, cols: Breakpoints)
  * @param  {Object} layouts     Existing layouts.
  * @param  {Array} breakpoints All breakpoints.
  * @param  {String} breakpoint New breakpoint.
- * @param  {String} breakpoint Last breakpoint (for fallback).
+ * @param  {Breakpoint} breakpoint Last breakpoint (for fallback).
+ * @param  {Breakpoint} lastBreakpoint Last breakpoint (for fallback). TODO duplicate ?
  * @param  {Number} cols       Column count at new breakpoint.
- * @param  {Boolean} verticalCompact Whether or not to compact the layout
- *   vertically.
+ * @param  {Boolean} verticalCompact Whether or not to compact the layout vertically.
  * @return {Array}             New layout.
  */
 export function findOrGenerateResponsiveLayout(orgLayout: Layout, layouts: ResponsiveLayout, breakpoints: Breakpoints,
@@ -72,25 +72,25 @@ export function findOrGenerateResponsiveLayout(orgLayout: Layout, layouts: Respo
   return compact(correctBounds(layout, {cols: cols}), verticalCompact);
 }
 
-export function generateResponsiveLayout(layout: Layout, breakpoints: Breakpoints,
-                                               breakpoint: Breakpoint, lastBreakpoint: Breakpoint,
-                                               cols: number, verticalCompact: boolean): Layout {
-  // If it already exists, just return it.
-  /*if (layouts[breakpoint]) return cloneLayout(layouts[breakpoint]);
-  // Find or generate the next layout
-  let layout = layouts[lastBreakpoint];*/
-    /*const breakpointsSorted = sortBreakpoints(breakpoints);
-  const breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
-  for (let i = 0, len = breakpointsAbove.length; i < len; i++) {
-    const b = breakpointsAbove[i];
-    if (layouts[b]) {
-      layout = layouts[b];
-      break;
-    }
-  }*/
-  layout = cloneLayout(layout || []); // clone layout so we don't modify existing items
-  return compact(correctBounds(layout, {cols: cols}), verticalCompact);
-}
+// export function generateResponsiveLayout(layout: Layout, breakpoints: Breakpoints,
+//                                                breakpoint: Breakpoint, lastBreakpoint: Breakpoint,
+//                                                cols: number, verticalCompact: boolean): Layout {
+//   // If it already exists, just return it.
+//   /*if (layouts[breakpoint]) return cloneLayout(layouts[breakpoint]);
+//   // Find or generate the next layout
+//   let layout = layouts[lastBreakpoint];*/
+//     /*const breakpointsSorted = sortBreakpoints(breakpoints);
+//   const breakpointsAbove = breakpointsSorted.slice(breakpointsSorted.indexOf(breakpoint));
+//   for (let i = 0, len = breakpointsAbove.length; i < len; i++) {
+//     const b = breakpointsAbove[i];
+//     if (layouts[b]) {
+//       layout = layouts[b];
+//       break;
+//     }
+//   }*/
+//   layout = cloneLayout(layout || []); // clone layout so we don't modify existing items
+//   return compact(correctBounds(layout, {cols: cols}), verticalCompact);
+// }
 
 /**
  * Given breakpoints, return an array of breakpoints sorted by width. This is usually
