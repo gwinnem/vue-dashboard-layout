@@ -73,8 +73,7 @@ export function collides(l1: LayoutItem, l2: LayoutItem): boolean {
  * between items.
  *
  * @param  {Array} layout Layout.
- * @param  {Boolean} verticalCompact Whether or not to compact the layout
- *   vertically.
+ * @param  {Boolean} verticalCompact Whether or not to compact the layout vertically.
  * @return {Array}       Compacted Layout.
  */
 export function compact(layout: Layout, verticalCompact: boolean): Layout {
