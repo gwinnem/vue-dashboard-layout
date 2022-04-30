@@ -27,12 +27,7 @@ import {
   moveElement,
   validateLayout
 } from '@/helpers/utils';
-import {
-  findOrGenerateResponsiveLayout,
-  getBreakpointFromWidth,
-  getColsFromBreakpoint
-} from "@/helpers/responsiveUtils";
-//var eventBus = require('./eventBus');
+import {findOrGenerateResponsiveLayout, getBreakpointFromWidth, getColsFromBreakpoint} from "@/helpers/responsiveUtils";
 import GridItem from './GridItem.vue'
 import {addWindowEventListener, removeWindowEventListener} from "@/helpers/DOM";
 
@@ -214,7 +209,6 @@ export default {
     width: function (newVal, oldVal) {
       const self = this;
       this.$nextTick(function () {
-        //this.$broadcast("updateWidth", this.width);
         this.eventBus.$emit("updateWidth", this.width);
         if (oldVal === null) {
           /*
@@ -277,7 +271,6 @@ export default {
     layoutUpdate() {
       if (this.layout !== undefined && this.originalLayout !== null) {
         if (this.layout.length !== this.originalLayout.length) {
-          // console.log("### LAYOUT UPDATE!", this.layout.length, this.originalLayout.length);
 
           let diff = this.findDifference(this.layout, this.originalLayout);
           if (diff.length > 0) {
@@ -317,12 +310,9 @@ export default {
     },
     containerHeight: function () {
       if (!this.autoSize) return;
-      // console.log("bottom: " + bottom(this.layout))
-      // console.log("rowHeight + margins: " + (this.rowHeight + this.margin[1]) + this.margin[1])
       return bottom(this.layout) * (this.rowHeight + this.margin[1]) + this.margin[1] + 'px';
     },
     dragEvent: function (eventName, id, x, y, h, w) {
-      //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
       let l = getLayoutItem(this.layout, id);
       //GetLayoutItem sometimes returns null object
       if (l === undefined || l === null) {
@@ -338,7 +328,6 @@ export default {
         this.$nextTick(function () {
           this.isDragging = true;
         });
-        //this.$broadcast("updateWidth", this.width);
         this.eventBus.$emit("updateWidth", this.width);
       } else {
         this.$nextTick(function () {
@@ -398,7 +387,6 @@ export default {
         this.$nextTick(function () {
           this.isDragging = true;
         });
-        //this.$broadcast("updateWidth", this.width);
         this.eventBus.$emit("updateWidth", this.width);
 
       } else {
