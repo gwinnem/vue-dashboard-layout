@@ -10,12 +10,14 @@
                class="vue-grid-placeholder"></grid-item>
   </div>
 </template>
+
 <style>
 .vue-grid-layout {
   position: relative;
   transition: height 200ms ease;
 }
 </style>
+
 <script>
 import Vue from 'vue';
 import {
