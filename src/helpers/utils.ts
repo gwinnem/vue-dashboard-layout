@@ -5,20 +5,6 @@ export type LayoutItem = LayoutItemRequired &
                           isDraggable?: boolean, isResizable?: boolean};
 export type Layout = Array<LayoutItem>;
 
-// export type Position = {left: number, top: number, width: number, height: number};
-/*
-export type DragCallbackData = {
-  node: HTMLElement,
-  x: number, y: number,
-  deltaX: number, deltaY: number,
-  lastX: number, lastY: number
-};
-*/
-// export type DragEvent = {e: Event} & DragCallbackData;
-// export type Size = {width: number, height: number};
-// export type ResizeEvent = {e: Event, node: HTMLElement, size: Size};
-
-// const isProduction = process.env.NODE_ENV === 'production';
 /**
  * Return the bottom coordinate of the layout.
  *
@@ -40,18 +26,6 @@ export function cloneLayout(layout: Layout): Layout {
     newLayout[i] = cloneLayoutItem(layout[i]);
   }
   return newLayout;
-}
-
-// Fast path to cloning, since this is monomorphic
-export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
-  /*return {
-    w: layoutItem.w, h: layoutItem.h, x: layoutItem.x, y: layoutItem.y, i: layoutItem.i,
-    minW: layoutItem.minW, maxW: layoutItem.maxW, minH: layoutItem.minH, maxH: layoutItem.maxH,
-    moved: Boolean(layoutItem.moved), static: Boolean(layoutItem.static),
-    // These can be null
-    isDraggable: layoutItem.isDraggable, isResizable: layoutItem.isResizable
-  };*/
-    return JSON.parse(JSON.stringify(layoutItem));
 }
 
 /**
@@ -191,7 +165,6 @@ export function getAllCollisions(layout: Layout, layoutItem: LayoutItem): Array<
  * @return {Array}        Array of static layout items..
  */
 export function getStatics(layout: Layout): Array<LayoutItem> {
-    //return [];
     return layout.filter((l) => l.static);
 }
 
@@ -208,9 +181,6 @@ export function getStatics(layout: Layout): Array<LayoutItem> {
  */
 export function moveElement(layout: Layout, l: LayoutItem, x: number, y: number, isUserAction: boolean, preventCollision: boolean): Layout {
   if (l.static) return layout;
-
-  // Short-circuit if nothing to do.
-  //if (l.y === y && l.x === x) return layout;
 
   const oldX = l.x;
   const oldY = l.y;
@@ -268,8 +238,10 @@ export function moveElement(layout: Layout, l: LayoutItem, x: number, y: number,
  * @param  {Boolean} [isUserAction]  If true, designates that the item we're moving is being dragged/resized
  *                                   by the user.
  */
-export function moveElementAwayFromCollision(layout: Layout, collidesWith: LayoutItem,
-                                             itemToMove: LayoutItem, isUserAction: boolean = false): Layout {
+export function moveElementAwayFromCollision(layout: Layout,
+                                             collidesWith: LayoutItem,
+                                             itemToMove: LayoutItem,
+                                             isUserAction: boolean = false): Layout {
 
   const preventCollision = false // we're already colliding
   // If there is enough space above the collision to put this element, move it there.
@@ -294,16 +266,6 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
   // with cascading moves, as an item may actually leap flog a collision and cause a reversal in order.
   return moveElement(layout, itemToMove, undefined, itemToMove.y + 1, isUserAction, preventCollision);
 }
-
-/**
- * Helper to convert a number to a percentage string.
- *
- * @param  {Number} num Any number
- * @return {String}     That number as a percentage.
- */
-// export function percent(num: number): string {
-//   return num * 100 + '%';
-// }
 
 /**
  * TODO
@@ -359,6 +321,7 @@ export function setTopLeft(top, left, width, height): Object {
         position: 'absolute'
     };
 }
+
 /**
  * Just like the setTopLeft method, but instead, it will return a right property instead of left.
  *
@@ -400,66 +363,6 @@ export function sortLayoutItemsByRowCol(layout: Layout): Layout {
 }
 
 /**
- * Generate a layout using the initialLayout and children as a template.
- * Missing entries will be added, extraneous ones will be truncated.
- *
- * @param  {Array}  initialLayout Layout passed in through props.
- * @param  {String} breakpoint    Current responsive breakpoint.
- * @param  {Boolean} verticalCompact Whether or not to compact the layout vertically.
- * @return {Array}                Working layout.
- */
-/*
-export function synchronizeLayoutWithChildren(initialLayout: Layout, children: Array<React.Element>|React.Element,
-                                              cols: number, verticalCompact: boolean): Layout {
-  // ensure 'children' is always an array
-  if (!Array.isArray(children)) {
-    children = [children];
-  }
-  initialLayout = initialLayout || [];
-
-  // Generate one layout item per child.
-  let layout: Layout = [];
-  for (let i = 0, len = children.length; i < len; i++) {
-    let newItem;
-    const child = children[i];
-
-    // Don't overwrite if it already exists.
-    const exists = getLayoutItem(initialLayout, child.key || "1" /!* FIXME satisfies Flow *!/);
-    if (exists) {
-      newItem = exists;
-    } else {
-      const g = child.props._grid;
-
-      // Hey, this item has a _grid property, use it.
-      if (g) {
-        if (!isProduction) {
-          validateLayout([g], 'ReactGridLayout.children');
-        }
-        // Validated; add it to the layout. Bottom 'y' possible is the bottom of the layout.
-        // This allows you to do nice stuff like specify {y: Infinity}
-        if (verticalCompact) {
-          newItem = cloneLayoutItem({...g, y: Math.min(bottom(layout), g.y), i: child.key});
-        } else {
-          newItem = cloneLayoutItem({...g, y: g.y, i: child.key});
-        }
-      }
-      // Nothing provided: ensure this is added to the bottom
-      else {
-        newItem = cloneLayoutItem({w: 1, h: 1, x: 0, y: bottom(layout), i: child.key || "1"});
-      }
-    }
-    layout[i] = newItem;
-  }
-
-  // Correct the layout.
-  layout = correctBounds(layout, {cols: cols});
-  layout = compact(layout, verticalCompact);
-
-  return layout;
-}
-*/
-
-/**
  * Validate a layout. Throws errors.
  *
  * @param  {Array}  layout        Array of layout items.
@@ -475,134 +378,25 @@ export function validateLayout(layout: Layout, contextName?: string): void {
     const item = layout[i];
     for (let j = 0; j < subProps.length; j++) {
       if (typeof item[subProps[j]] !== 'number') {
-        throw new Error('VueGridLayout: ' + contextName + '[' + i + '].' + subProps[j] + ' must be a number!');
+        throw new Error('Vue Dashboard Layout: ' + contextName + '[' + i + '].' + subProps[j] + ' must be a number!');
       }
     }
 
     if (item.i === undefined || item.i === null) {
-      throw new Error('VueGridLayout: ' + contextName + '[' + i + '].i cannot be null!');
+      throw new Error('Vue Dashboard Layout: ' + contextName + '[' + i + '].i cannot be null!');
     }
 
     if (typeof item.i !== 'number' && typeof item.i !== 'string') {
-      throw new Error('VueGridLayout: ' + contextName + '[' + i + '].i must be a string or number!');
+      throw new Error('Vue Dashboard Layout: ' + contextName + '[' + i + '].i must be a string or number!');
     }
 
     if (keyArr.indexOf(item.i) >= 0) {
-      throw new Error('VueGridLayout: ' + contextName + '[' + i + '].i must be unique!');
+      throw new Error('Vue Dashboard Layout: ' + contextName + '[' + i + '].i must be unique!');
     }
     keyArr.push(item.i);
 
     if (item.static !== undefined && typeof item.static !== 'boolean') {
-      throw new Error('VueGridLayout: ' + contextName + '[' + i + '].static must be a boolean!');
+      throw new Error('Vue Dashboard Layout: ' + contextName + '[' + i + '].static must be a boolean!');
     }
   }
 }
-
-// Flow can't really figure this out, so we just use Object
-// export function autoBindHandlers(el: Object, fns: Array<string>): void {
-//   fns.forEach((key) => el[key] = el[key].bind(el));
-// }
-
-
-
-/**
- * Convert a JS object to CSS string. Similar to React's output of CSS.
- * @param obj
- * @returns {string}
- */
-// export function createMarkup(obj) {
-//     var keys = Object.keys(obj);
-//     if (!keys.length) return '';
-//     var i, len = keys.length;
-//     var result = '';
-//
-//     for (i = 0; i < len; i++) {
-//         var key = keys[i];
-//         var val = obj[key];
-//         result += hyphenate(key) + ':' + addPx(key, val) + ';';
-//     }
-//
-//     return result;
-// }
-
-
-/* The following list is defined in React's core */
-// export var IS_UNITLESS = {
-//     animationIterationCount: true,
-//     boxFlex: true,
-//     boxFlexGroup: true,
-//     boxOrdinalGroup: true,
-//     columnCount: true,
-//     flex: true,
-//     flexGrow: true,
-//     flexPositive: true,
-//     flexShrink: true,
-//     flexNegative: true,
-//     flexOrder: true,
-//     gridRow: true,
-//     gridColumn: true,
-//     fontWeight: true,
-//     lineClamp: true,
-//     lineHeight: true,
-//     opacity: true,
-//     order: true,
-//     orphans: true,
-//     tabSize: true,
-//     widows: true,
-//     zIndex: true,
-//     zoom: true,
-//
-//     // SVG-related properties
-//     fillOpacity: true,
-//     stopOpacity: true,
-//     strokeDashoffset: true,
-//     strokeOpacity: true,
-//     strokeWidth: true
-// };
-
-
-/**
- * Will add px to the end of style values which are Numbers.
- * @param name
- * @param value
- * @returns {*}
- */
-// export function addPx(name, value) {
-//     if(typeof value === 'number' && !IS_UNITLESS[ name ]) {
-//         return value + 'px';
-//     } else {
-//         return value;
-//     }
-// }
-
-
-/**
- * Hyphenate a camelCase string.
- *
- * @param {String} str
- * @return {String}
- */
-
-// export var hyphenateRE = /([a-z\d])([A-Z])/g;
-
-// export function hyphenate(str) {
-//     return str.replace(hyphenateRE, '$1-$2').toLowerCase();
-// }
-
-
-// export function findItemInArray(array, property, value) {
-//     for (var i=0; i < array.length; i++)
-//         if (array[i][property] == value)
-//             return true;
-//
-//     return false;
-// }
-
-// export function findAndRemove(array, property, value) {
-//     array.forEach(function (result, index) {
-//         if (result[property] === value) {
-//             //Remove from array
-//             array.splice(index, 1);
-//         }
-//     });
-// }

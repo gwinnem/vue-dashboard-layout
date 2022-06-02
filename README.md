@@ -14,7 +14,6 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * Responsive.
 
 ## New Features:
-* Add Pinia for sharing and updating the state when the layout and the items are changed.
 
 ## TODO's
 * ~~Update all npm packages.~~
