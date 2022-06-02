@@ -20,6 +20,18 @@ export function bottom(layout: Layout): number {
   return max;
 }
 
+// Fast path to cloning, since this is monomorphic
+export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
+  /*return {
+    w: layoutItem.w, h: layoutItem.h, x: layoutItem.x, y: layoutItem.y, i: layoutItem.i,
+    minW: layoutItem.minW, maxW: layoutItem.maxW, minH: layoutItem.minH, maxH: layoutItem.maxH,
+    moved: Boolean(layoutItem.moved), static: Boolean(layoutItem.static),
+    // These can be null
+    isDraggable: layoutItem.isDraggable, isResizable: layoutItem.isResizable
+  };*/
+  return JSON.parse(JSON.stringify(layoutItem));
+}
+
 export function cloneLayout(layout: Layout): Layout {
   const newLayout = Array(layout.length);
   for (let i = 0, len = layout.length; i < len; i++) {
@@ -162,7 +174,7 @@ export function getAllCollisions(layout: Layout, layoutItem: LayoutItem): Array<
 /**
  * Get all static elements.
  * @param  {Array} layout Array of layout objects.
- * @return {Array}        Array of static layout items..
+ * @return {Array}        Array of static layout items.
  */
 export function getStatics(layout: Layout): Array<LayoutItem> {
     return layout.filter((l) => l.static);
@@ -275,7 +287,7 @@ export function moveElementAwayFromCollision(layout: Layout,
  * @param height
  */
 export function setTransform(top, left, width, height): Object {
-  // Replace unitless items with px
+  // Replace unit less items with px
   const translate = "translate3d(" + left + "px," + top + "px, 0)";
   return {
     transform: translate,
@@ -298,7 +310,7 @@ export function setTransform(top, left, width, height): Object {
  * @returns {{transform: string, WebkitTransform: string, MozTransform: string, msTransform: string, OTransform: string, width: string, height: string, position: string}}
  */
 export function setTransformRtl(top, right, width, height): Object {
-    // Replace unitless items with px
+    // Replace unit less items with px
     const translate = "translate3d(" + right * -1 + "px," + top + "px, 0)";
     return {
         transform: translate,
