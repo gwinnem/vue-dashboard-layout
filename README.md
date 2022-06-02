@@ -1,7 +1,7 @@
 # What is gwinnem/vue-dashboard-layout?
 [It is based on jbaysolutions: vue-grid-layout](https://jbaysolutions.github.io/vue-grid-layout)
 
-New work will be focused on upgrading the vue version to 3.0.0 and refactoring code so it is proper typescript with new linting rules to ensure better code quality.
+New work will be focused on upgrading the vue version to 3.0.0 and refactoring code, so it is proper typescript with new linting rules to ensure better code quality.
 
 ## Original Features:
 * Draggable widgets.
@@ -19,11 +19,19 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 ## TODO's
 * ~~Update all npm packages.~~
 * ~~Change all js files to ts.~~
-* Fix new issues.
-    * Prop rowHeight is not a number when being increased in the App.vue file.
-* Investigate if interact js can be replaced since it has links to outdated packages with performance issues.
-    * [MAybe use latest npm](https://www.npmjs.com/package/interactjs)
+* Fix new issues in dev ui (App.vue).
+    * Prop rowHeight is not a number when being increased in the App.vue file. To be done later since this only affects the dev ui.
+* ~~Investigate if interact js can be replaced since it has links to outdated packages with performance issues.~~
+    * ~~Not working [Maybe use latest npm](https://www.npmjs.com/package/interactjs)~~
 * Refactor prop names.
+* Fix warnings in the terminal.
+    * ~~App.vue =>  155:13  error  The "CustomDragElement" component has been registered but not used  vue/no-unused-components~~
+    * Gridlayout.vue => 336:17  error  Unexpected mutation of "layout" prop  vue/no-mutating-props
+    * DOM.ts => 1:15  error  Parsing error: Unexpected token :
+    * responsiveUtils.ts => 2:13  error  Parsing error: Unexpected token {
+    * utils.ts => 1:8  error  Parsing error: Unexpected token type
+* Fix all magic strings and use enums instead.
+* Replace interact.js with [sortablejs](https://github.com/SortableJS/Sortable) or [VUE 3 version](https://github.com/SortableJS/vue.draggable.next)
 * Extract inline json code for layouts to new files.
 * New linting rules.
 * Fix all warnings.
@@ -32,6 +40,7 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 * New documentation.
 * New build scripts.
 * New npm publish scripts.
+* Publish work to npm.
 * Refactor code in vue files and introduce Pinia store, for storing and sharing state.
 * Register domain vue-dashboard-layout and find hosting.
 * Create properly styled documentation on new website.
@@ -57,8 +66,6 @@ New work will be focused on upgrading the vue version to 3.0.0 and refactoring c
 
 
 ## Issues
-[Template](./.github/ISSUE_TEMPLATE.md)
 
 
 ## Pull requests
-[Template](./.github/ISSUE_TEMPLATE.md)
